@@ -1,12 +1,11 @@
 #!/bin/bash
 
-# Check for the correct number of arguments
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
     echo "Usage: $0 <column> [file.csv]" >&2
     exit 1
 fi
 
-# Get the column number
+# Get column number
 column="$1"
 
 # Determine the input source (file or stdin)
@@ -22,10 +21,10 @@ if [ "$file" != "/dev/stdin" ] && [ ! -f "$file" ]; then
     exit 1
 fi
 
-# Calculate the mean
+# Calculate mean
 mean=$(cut -d ',' -f "$column" "$file" | tail -n +2 | { sum=0; count=0; while read -r value; do sum=$((sum + value)); count=$((count + 1)); done; echo "scale=2; $sum / $count" | bc; })
 
-# Print the mean
+# Print mean
 if [ "$file" != "/dev/stdin" ]; then
     echo "Mean of column $column in '$file': $mean"
 else
